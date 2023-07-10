@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>sample4</title>
+
+  <!-- three.jsを読み込む(ローカル) -->
+  <!-- <script src="./three.js"></script> -->
+  <!-- three.jsを読み込む(CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.min.js"></script>
+
+</head>
+<body>
+ <script>
+  var init = function() {
+
+    var width = 800,
+        height = 600;
+  
+    // レンダラーを作成
+    var renderer = new THREE.WebGLRenderer();
+    document.body.appendChild(renderer.domElement);
+     renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(width, height);
+    // 背景の色を設定
+    renderer.setClearColor(0xffffdd);
+  
+    // シーンを作成
+    var scene = new THREE.Scene();
+  
+    // カメラを作成
+    var camera = new THREE.PerspectiveCamera(45, width / height);
+    camera.position.set(3, 3, -1); //位置を指定
+    camera.lookAt(0, 0, 0); //見つめる方向
+
+     // 床を作成
+      const meshFloor = new THREE.Mesh(
+        new THREE.BoxGeometry(2000, 0.1, 2000),
+        new THREE.MeshStandardMaterial({ color: 0x808080, roughness: 0.0 })
+      );
+      // 影を受け付ける
+      meshFloor.receiveShadow = true;
+      scene.add(meshFloor);
+
+    // テクスチャー読み込み
+    var textureLoader = new THREE.TextureLoader();
+    var texture = textureLoader.load("cit.png");
+    var mat = new THREE.MeshPhongMaterial();
+    mat.map = texture;
+
+    // テクスチャー読み込み
+    var textureLoader = new THREE.TextureLoader();
+    var texture0 = textureLoader.load("tibani.png");
+    // 板ポリ左用
+    var mat0 = new THREE.MeshLambertMaterial();
+    mat0.map = texture0;
+    // 板ポリ右用
+    var mat1 = new THREE.MeshLambertMaterial({transparent: true});
+    mat1.map = texture0;
+
+    // スプライトで作成
+    var textureLoader = new THREE.TextureLoader();
+    var texture = textureLoader.load("tibani.png");
+    const material = new THREE.SpriteMaterial({ map: texture0,});
+    // 木左
+    const sprite1 = new THREE.Sprite(material);
+    sprite1.scale.set(1,2,1);
+    sprite1.position.set(-1,1,0); //位置を指定
+    scene.add(sprite1);
+
+   
+
+    // helper
+    const gridHelper = new THREE.GridHelper(2,10); // size, step
+    scene.add(gridHelper);
+    const axisHelper = new THREE.AxisHelper(2); //軸の長さ X：赤、Y：緑、z：青
+    scene.add(axisHelper);
+    
+     //ライト
+     var light = new THREE.SpotLight({ color: 0xffffff });
+    light.position.set(10,10,10)
+    light.castShadow = true;
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
+    scene.add(light);
+
+    // 箱を作成
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var box = new THREE.Mesh(geometry, mat);
+    box.position.z = (0,0,0);
+    box.castShadow = true;
+    scene.add(box);
+  
+
+    //ドーナッツ
+    var torusGeometry = new THREE.TorusGeometry( 0.5, 0.2, 6, 12 ); 
+    var torus = new THREE.Mesh( torusGeometry, mat1 );
+    torus.position.set( 0, 2, -5);
+    torus.castShadow = true;
+    scene.add( torus );
+
+     // 平行光源1
+    var directionalLight1 = new THREE.DirectionalLight(0xffffff);
+    directionalLight1.position.set(1, 1, 1);
+    // シーンに追加
+    scene.add(directionalLight1);
+    // 平行光源2
+        var directionalLight2 = new THREE.DirectionalLight(0xffffff);
+    directionalLight2.position.set(-1, 1, 1);
+    // シーンに追加
+    scene.add(directionalLight2);
+  
+    // 初回実行
+    var update = function() {
+      requestAnimationFrame(update);
+  
+      // 箱を回転させる
+      box.rotation.x += 0.05;
+      box.rotation.y += 0.05;
+
+      torus.rotation.x += 0.01;
+      torus.rotation.y += 0.01;
+
+        // 照明の位置を更新
+        const t = Date.now() / 500;
+        const r = 2.0;
+        const lx = r * Math.cos(t);
+        const lz = r * Math.sin(t);
+        const ly = 2.0 + 5.0 * Math.sin(t / 3.0);
+        light.position.set(lx, ly, lz);
+
+      //描画
+      renderer.render(scene, camera);
+    };
+    update();
+  }
+  window.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
