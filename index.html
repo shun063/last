@@ -62,7 +62,7 @@
     var textureLoader = new THREE.TextureLoader();
     var texture = textureLoader.load("tibani.png");
     const material = new THREE.SpriteMaterial({ map: texture0,});
-    // 木左
+
     const sprite1 = new THREE.Sprite(material);
     sprite1.scale.set(1,2,1);
     sprite1.position.set(-1,1,0); //位置を指定
@@ -87,13 +87,14 @@
     // 箱を作成
     var geometry = new THREE.BoxGeometry(1, 1, 1);
     var box = new THREE.Mesh(geometry, mat);
+    box.position.y  =(0,3,0);
     box.position.z = (0,0,0);
     box.castShadow = true;
     scene.add(box);
   
 
     //ドーナッツ
-    var torusGeometry = new THREE.TorusGeometry( 0.5, 0.2, 6, 12 ); 
+    var torusGeometry = new THREE.TorusGeometry( 2, 2, 2, 10 ); 
     var torus = new THREE.Mesh( torusGeometry, mat1 );
     torus.position.set( 0, 2, -5);
     torus.castShadow = true;
@@ -118,8 +119,8 @@
       box.rotation.x += 0.05;
       box.rotation.y += 0.05;
 
-      torus.rotation.x += 0.01;
-      torus.rotation.y += 0.01;
+      sprite1.rotation.x += 0.01;
+      sprite1.rotation.y += 0.01;
 
         // 照明の位置を更新
         const t = Date.now() / 800;
