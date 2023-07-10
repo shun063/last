@@ -91,14 +91,7 @@
     box.position.z = (0,0,0);
     box.castShadow = true;
     scene.add(box);
-  
 
-    //ドーナッツ
-    var torusGeometry = new THREE.TorusGeometry( 2, 2, 2, 10 ); 
-    var torus = new THREE.Mesh( torusGeometry, mat1 );
-    torus.position.set( 0, 2, -5);
-    torus.castShadow = true;
-    scene.add( torus );
 
      // 平行光源1
     var directionalLight1 = new THREE.DirectionalLight(0xffffff);
@@ -119,8 +112,6 @@
       box.rotation.x += 0.05;
       box.rotation.y += 0.05;
 
-      sprite1.rotation.x += 0.01;
-      sprite1.rotation.y += 0.01;
 
         // 照明の位置を更新
         const t = Date.now() / 800;
