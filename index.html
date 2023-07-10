@@ -30,13 +30,13 @@
   
     // カメラを作成
     var camera = new THREE.PerspectiveCamera(45, width / height);
-    camera.position.set(3, 3, -1); //位置を指定
+    camera.position.set(2, 2, 2); //位置を指定
     camera.lookAt(0, 0, 0); //見つめる方向
 
      // 床を作成
       const meshFloor = new THREE.Mesh(
-        new THREE.BoxGeometry(2000, 0.1, 2000),
-        new THREE.MeshStandardMaterial({ color: 0x808080, roughness: 0.0 })
+        new THREE.BoxGeometry(200, 0.1, 200),
+        new THREE.MeshStandardMaterial({ color: 0x00ffff, roughness: 0.0 })
       );
       // 影を受け付ける
       meshFloor.receiveShadow = true;
@@ -78,10 +78,10 @@
     
      //ライト
      var light = new THREE.SpotLight({ color: 0xffffff });
-    light.position.set(10,10,10)
+    light.position.set(1,1,1)
     light.castShadow = true;
-    light.shadow.mapSize.width = 2048;
-    light.shadow.mapSize.height = 2048;
+    light.shadow.mapSize.width = 1024;
+    light.shadow.mapSize.height = 1024;
     scene.add(light);
 
     // 箱を作成
@@ -122,11 +122,11 @@
       torus.rotation.y += 0.01;
 
         // 照明の位置を更新
-        const t = Date.now() / 500;
-        const r = 2.0;
+        const t = Date.now() / 800;
+        const r = 0;
         const lx = r * Math.cos(t);
         const lz = r * Math.sin(t);
-        const ly = 2.0 + 5.0 * Math.sin(t / 3.0);
+        const ly = 2.0 + 0.5 * Math.sin(t / 3.0);
         light.position.set(lx, ly, lz);
 
       //描画
